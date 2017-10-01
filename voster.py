@@ -122,25 +122,31 @@ def DNSIP(domain):
 	try:
 		mx = requests.get('https://dns-api.org/MX/%s/' %domain , verify=False)
 		for row in json.loads(mx.text):
+			try:
+				mx_row = row['value'].split(" ")[1]
+				a = requests.get('https://dns-api.org/A/%s/' %mx_row , verify=False)
+				for ip in json.loads(a.text):
 
-			mx_row = row['value'].split(" ")[1]
-			a = requests.get('https://dns-api.org/A/%s/' %mx_row , verify=False)
-			for ip in json.loads(a.text):
-
-				targetIP = ip['value']
-				dns_ips.append(targetIP)
-				print "%s[!] DNS MX: %s has IP:%s %s" %(NOTICE,mx_row,targetIP,ENDC)
+					targetIP = ip['value']
+					dns_ips.append(targetIP)
+					print "%s[!] DNS MX: %s has IP:%s %s" %(NOTICE,mx_row,targetIP,ENDC)
+			except: 
+				print FAIL +"[!] Failed to collect MX information for :" +mx_row  +ENDC
+				continue
 		# Name Servers IP's
 		ns = requests.get('https://dns-api.org/NS/%s/' %domain , verify=False)
 		for row in json.loads(ns.text):
+			try:
+				ns_row = row['value']
+				a = requests.get('https://dns-api.org/A/%s/' %ns_row , verify=False)
 
-			ns_row = row['value']
-			a = requests.get('https://dns-api.org/A/%s/' %ns_row , verify=False)
-
-			for ip in json.loads(a.text):
-				targetIP = ip['value']
-				dns_ips.append(targetIP)
-				print "%s[!] DNS NS: %s has IP:%s %s" %(NOTICE,ns_row,targetIP,ENDC)
+				for ip in json.loads(a.text):
+					targetIP = ip['value']
+					dns_ips.append(targetIP)
+					print "%s[!] DNS NS: %s has IP:%s %s" %(NOTICE,ns_row,targetIP,ENDC)
+			except:
+				print FAIL +"[!] Failed to collect NS information for :" +ns_row  +ENDC
+				continue
 	except:
 		print FAIL +"[!] Failed to collect DNS information for :" +domain  +ENDC
 
