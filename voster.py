@@ -183,6 +183,29 @@ q = Queue(maxsize=0)
 lock = Lock()
 
 
+def FalsePostive(method,ip,port,status_code):
+	fakedomain = 'never3ev3rsh0uldbeh3re.com'
+	
+        try:
+
+
+                r = requests.get('%s://%s:%s/' %(method,ip,port),
+                        headers={
+                                'host': fakedomain,
+                                'User-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
+                                },
+                        timeout=timeout,
+                        verify=False,
+                        allow_redirects = False,
+                        # proxies=dict(http='http://127.0.0.1:8080')
+
+                        )
+        	if status_code == r.status_code and fakedomain in r.headers['Location']:
+                	return False
+		else:
+                	return True
+	except:
+		return False
 
 
 def Result(status_code,ip,version,redirect=None,redirect_match=False,title=None,found=False,fingerprint=None,length=0,hit=None):
@@ -297,7 +320,8 @@ def Operator(ip,port):
 		try:
 			redirect = r.headers['Location']
 			if domain in redirect:
-				redirect_match = True
+				if FalsePostive(method,ip,port,status_code):
+					redirect_match = True
 			else:
 				redirect_match = False
 		except:
