@@ -48,8 +48,8 @@ ____    ____  ______        _______.___________. _______ .______
   \      /  |  |  |  |     \   \       |  |     |   __|  |      /     
    \    /   |  `--'  | .----)   |      |  |     |  |____ |  |\  \----.
     \__/     \______/  |_______/       |__|     |_______|| _| `._____|
-                                                                      version 1.0 by @eln1x
-
+                                                                      Version 1.0
+								      Author: Ahmad Mahfouz @eln1x
 """
 NOTICE = '\033[95m'
 OKBLUE = '\033[94m'
@@ -63,13 +63,13 @@ UNDERLINE = '\033[4m'
 print OKBLUE+ banner + ENDC
 
 
-parser = argparse.ArgumentParser(description="""Voster check misconfigured Cloud WAF and Web Server for Virtual Hosts """ )		
+parser = argparse.ArgumentParser(description="""Voster check misconfigured Cloud-WAF/Load Balancer implementation""" )		
 parser.add_argument("-d", "--domain", action='store',  dest='domain', help="target domain name")
 parser.add_argument("-p", "--port", dest='port' ,help="target port number",type=int ,action="store", default=80)
 parser.add_argument("-m", "--method", action='store',  dest='method', help="target domain name",default="http")
-parser.add_argument("-t", "--threads", dest="threads", help="scan threads number", type=int, default=10)
+parser.add_argument("-t", "--threads", dest="threads", help="number of threads", type=int, default=10)
 parser.add_argument("-s", "--subnet", dest='subnet' ,help="range to scan for domain name example: 192.168.1.1/24")
-parser.add_argument("-f", "--fingerprint", dest='fingerprint' ,help="fingerprint you looking for example: CyberSpace_logo150x150.png", default="Welcome")
+parser.add_argument("-f", "--fingerprint", dest='fingerprint' ,help="a unique string exist inside the web contenet example: CyberSpace_logo150x150.png", default="Welcome")
 parser.add_argument("-x", "--timeout", dest='timeout' ,help="connection timeout", type=int, default=5)
 parser.add_argument("-z", "--debug", dest='debug' ,help="print debug messages", type=bool, default=False)
 
